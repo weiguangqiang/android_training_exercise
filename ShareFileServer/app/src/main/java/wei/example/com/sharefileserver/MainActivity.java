@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,8 +23,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String MY_INTERNAL_FILE_NAME = "myfile";
     private static final String INTERNAL_FILE_CONTENT = "This is my internal file for test";
 
+    private static int count = 1;
+
     private Button generateBtn = null;
     private ListView listView = null;
+    private ArrayAdapter arrayAdapter = null;
 
     private Intent mResultIntent = null;
 
@@ -45,14 +47,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mResultIntent = new Intent("wei.example.com.sharefileserver.fileprovider.ACTION_RETURN_FILE");
 
+        generateInternalFile(this);
+
         mPrivateRootDir = getFilesDir();
-        mFileDir = new File(mPrivateRootDir, "images"); // 共享文件的路径
+        mFileDir = new File(mPrivateRootDir, "sharefiles"); // 共享文件的路径
         mFiles = mFileDir.listFiles(); // 获取共享文件路径中的所有文件
 
-        mFilesName = new String[mFiles.length];
+        if (mFiles != null) {
+            mFilesName = new String[mFiles.length];
 
-        for (int i = 0; i < mFiles.length; i++) {
-            mFilesName[i] = mFiles[i].getName(); // 获取共享文件的文件名
+            for (int i = 0; i < mFiles.length; i++) {
+                mFilesName[i] = mFiles[i].getName(); // 获取共享文件的文件名
+            }
         }
         
         // Set the Activity's result to null to begin with
@@ -65,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * calling File.getAbsolutePath() for each File
          */
         listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFilesName));
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFilesName);
+        listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -119,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.generate_file_btn:
                 generateInternalFile(this);
                 Toast.makeText(this, "generate internal file successfully, please check.", Toast.LENGTH_SHORT).show();
+                arrayAdapter.notifyDataSetChanged();
                 break;
 
             default:
@@ -128,16 +136,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 生成Internal File
-     * 路径：/data/data/<packeage_name>/files/
+     * 路径：/data/data/<packeage_name>/files/sharefiles/
      */
     private void generateInternalFile(Context context) {
-        File myFile = new File(context.getFilesDir(), MY_INTERNAL_FILE_NAME);
+        File shareFiles = new File(context.getFilesDir(), "sharefiles");
+        if (!shareFiles.exists()) {
+            shareFiles.mkdirs();
+        }
 
-        FileOutputStream outputStream = null;
+        String fileName = MY_INTERNAL_FILE_NAME + "-" + count;
+        String content = INTERNAL_FILE_CONTENT + " - " + count;
+        File myFile = new File(shareFiles, fileName);
+
         try {
-            outputStream = openFileOutput(MY_INTERNAL_FILE_NAME, Context.MODE_PRIVATE);
-            outputStream.write(INTERNAL_FILE_CONTENT.getBytes());
+            FileOutputStream outputStream = new FileOutputStream(myFile);
+            outputStream.write(content.getBytes());
             outputStream.close();
+
+            count++;
         } catch (Exception e) {
             e.printStackTrace();
         }
