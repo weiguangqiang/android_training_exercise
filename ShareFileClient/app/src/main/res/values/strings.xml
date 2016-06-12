@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ShareFileClient</string>
+    <string name="request_file">Request File</string>
 </resources>
