@@ -13,12 +13,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".FileSelectActivity"
-            android:label="File Selector">
-            <intent-filter>
+
+                <!-- 接收ShareFileClient的请求Intent -->
                 <action android:name="android.intent.action.PICK" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -27,6 +23,19 @@
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="*/*" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".FileSelectActivity"
+            android:label="File Selector">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="*/*" />
+            </intent-filter>-->
         </activity>
 
         <provider
