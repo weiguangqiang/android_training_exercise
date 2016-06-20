@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TakePhoto</string>
+    <string name="capture_photo_activity_for_result">Capture Photo Activity For Result</string>
 </resources>

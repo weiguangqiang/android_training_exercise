@@ -7,10 +7,37 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
     tools:context="wei.example.com.takephoto.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/description"
+        android:layout_centerHorizontal="true"
+        android:text="Take Photos" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line1"
+        android:layout_below="@id/description"
+        android:layout_marginTop="@dimen/line_margin"
+        android:layout_marginBottom="@dimen/line_margin"
+        android:background="@color/gray"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line1"
+        android:id="@+id/capture_photo_with_activity_for_result_btn"
+        android:text="@string/capture_photo_activity_for_result"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/capture_photo_with_activity_for_result_btn"
+        android:layout_marginTop="@dimen/line_margin"
+        android:id="@+id/show_photo_img"
+        android:visibility="invisible"/>
 </RelativeLayout>
